@@ -8,3 +8,4 @@ description = "Structured logging library for the Cirious Codex ecosystem."
 repository = "https://github.com/Cirious-Studio/cirious_codex_logger"
 
 [dependencies]
+cirious_codex_term = { git = "https://github.com/cirious-studio/cirious_codex_term.git"}
