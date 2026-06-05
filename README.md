@@ -24,7 +24,7 @@ The architecture is currently being mapped out for the initial `v0.1` release:
 
 - [x] Core logging macros (`trace`, `debug`, `info`, `warn`, `error`).
 - [x] Extensible output formatters (JSON, human-readable terminal).
-- [ ] Pluggable dispatchers (stdout, stderr, rolling files).
+- [x] Pluggable dispatchers (stdout, stderr, rolling files).
 - [ ] Integration with `cirious-codex-term` for rich, native terminal styling.
 
 ---
