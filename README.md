@@ -4,9 +4,7 @@
 
 **Structured Logging & Tracing for the Cirious Ecosystem**
 
-[![Status](https://img.shields.io/badge/Status-Initial_Setup-orange.svg)]() [![Language](https://img.shields.io/badge/Language-Rust-black?logo=rust)](https://www.rust-lang.org/) [![License](https://img.shields.io/badge/License-MIT%2FApache-blue.svg)](#-license)
-
-> 🚧 **Note:** This crate is currently in its initial setup phase. Active foundational development has just started.
+[![CI](https://github.com/cirious-studio/cirious_codex_logger/actions/workflows/ci.yml/badge.svg)](https://github.com/cirious-studio/cirious_codex_logger/actions/workflows/ci.yml) [![Crates.io](https://img.shields.io/crates/v/cirious_codex_logger.svg)](https://crates.io/crates/cirious_codex_logger) [![Docs.rs](https://docs.rs/cirious_codex_logger/badge.svg)](https://docs.rs/cirious_codex_logger) [![Language](https://img.shields.io/badge/Language-Rust-black?logo=rust)](https://www.rust-lang.org/) [![License](https://img.shields.io/badge/License-MIT%2FApache-blue.svg)](#-license)
 
 </div>
 
@@ -18,14 +16,50 @@
 
 Designed to be the ultimate observability bedrock for tools and applications within the Cirious ecosystem, prioritizing performance, structural integrity, and seamless terminal integration.
 
+---
+
+## ✨ Features
+
+- Core logging macros (`trace`, `debug`, `info`, `warn`, `error`).
+- Extensible output formatters (JSON, human-readable terminal).
+- Pluggable dispatchers (stdout, stderr, rolling files).
+- Integration with `cirious_codex_term` for rich, native terminal styling.
+
+---
+
+## 🚀 Quick Start
+ 
+Add the following to your `Cargo.toml`:
+
+```toml
+[dependencies]
+cirious_codex_logger = "0.1"
+```
+
+And then in your code:
+
+```rust
+use cirious_codex_logger::{debug, error, info, trace, warn};
+ 
+fn main() {
+  info!("Application started successfully.");
+  debug!("Debugging an internal variable: {}", 42);
+  warn!("Memory usage is high.");
+  error!("Failed to connect to the database.");
+  trace!("Tracing execution flow.");
+}
+```
+---
+
 ## 🚧 Current Status & Roadmap
 
-The architecture is currently being mapped out for the initial `v0.1` release:
+The architecture is currently being mapped out for the initial `v0.2` release:
 
-- [x] Core logging macros (`trace`, `debug`, `info`, `warn`, `error`).
-- [x] Extensible output formatters (JSON, human-readable terminal).
-- [x] Pluggable dispatchers (stdout, stderr, rolling files).
-- [x] Integration with `cirious-codex-term` for rich, native terminal styling.
+- [ ] Global Logger Registration (`OnceLock` integration for macros).
+- [ ] Context & Metadata Enrichment (`timestamp`, `module_path`, `file`, `line`).
+- [ ] Log Filtering (Level & Module-based filtering capabilities).
+- [ ] Non-blocking / Async Dispatching (Background thread queueing).
+- [ ] Rolling File Dispatcher (Size or Date-based file rotation).
 
 ---
 

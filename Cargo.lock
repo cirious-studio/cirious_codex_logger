@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "cirious-codex-logger"
+name = "cirious_codex_logger"
 version = "0.1.0"
 dependencies = [
  "cirious_codex_term",
@@ -12,4 +12,5 @@ dependencies = [
 [[package]]
 name = "cirious_codex_term"
 version = "0.1.0"
-source = "git+https://github.com/cirious-studio/cirious_codex_term.git#7b0e54fbe94a21889fee1b8aee9605d35fb52a50"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af9ac8b4c918590f8e1b6bc42f23e628b7d6bccd50ed4a87da184d92e4b13e56"
