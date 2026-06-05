@@ -23,7 +23,7 @@ Designed to be the ultimate observability bedrock for tools and applications wit
 The architecture is currently being mapped out for the initial `v0.1` release:
 
 - [x] Core logging macros (`trace`, `debug`, `info`, `warn`, `error`).
-- [ ] Extensible output formatters (JSON, human-readable terminal).
+- [x] Extensible output formatters (JSON, human-readable terminal).
 - [ ] Pluggable dispatchers (stdout, stderr, rolling files).
 - [ ] Integration with `cirious-codex-term` for rich, native terminal styling.
 
