@@ -1,31 +1,71 @@
 use crate::Level;
 
-// 1. Event data structure
+/// Represents a single log event.
+///
+/// A `Record` contains all the necessary metadata and arguments required to
+/// output a log message. It is passed from the logging macros to the active
+/// dispatchers via a formatter.
 pub struct Record<'a> {
+  /// The verbosity level of this record.
   pub level: Level,
+  /// The formatted message arguments provided via the logging macros.
   pub args: std::fmt::Arguments<'a>,
   // Future: pub target: &'a str, pub timestamp: SystemTime
 }
 
-// 2. Trait base for formatters
+/// A trait for structuring and serializing log records.
+///
+/// Formatters take a `Record` and convert it into a `String` representation
+/// suitable for the target dispatcher (e.g., plain text, JSON, etc.).
 pub trait Formatter {
+  /// Formats the given log record into a string.
   fn format(&self, record: &Record) -> String;
 }
 
-// 3. Human-readable formatter
+/// A standard, human-readable formatter.
+///
+/// This formatter outputs records in a simple plaintext format, making it
+/// ideal for terminal output or basic text log files.
+///
+/// Format: `[Level] Message`
 pub struct HumanReadableFormatter;
+
 impl Formatter for HumanReadableFormatter {
   fn format(&self, record: &Record) -> String {
     format!("[{:?}] {}", record.level, record.args)
   }
 }
 
-// 4. JSON Formatter
+/// A structured JSON formatter.
+///
+/// This formatter outputs log records as single-line JSON objects, which is
+/// highly recommended for machine ingestion (e.g., Elasticsearch, Datadog).
 pub struct JsonFormatter;
+
 impl Formatter for JsonFormatter {
   fn format(&self, record: &Record) -> String {
     // Simple manual setup to avoid dependencies in the initial setup
     // In an advanced scenario, you can integrate `serde` or `serde_json`
     format!(r#"{{"level":"{:?}","message":"{}"}}"#, record.level, record.args)
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use crate::Level;
+
+  #[test]
+  fn test_human_readable_formatter() {
+    let args = format_args!("System initialized");
+    let record = Record {
+      level: Level::Debug,
+      args,
+    };
+
+    let formatter = HumanReadableFormatter;
+    let result = formatter.format(&record);
+
+    assert_eq!(result, "[Debug] System initialized");
   }
 }
