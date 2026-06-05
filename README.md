@@ -4,7 +4,7 @@
 
 **Structured Logging & Tracing for the Cirious Ecosystem**
 
-[![CI](https://github.com/cirious-foundation/cirious_codex_logger/actions/workflows/ci.yml/badge.svg)](https://github.com/cirious-foundation/cirious_codex_logger/actions/workflows/ci.yml) [![Crates.io](https://img.shields.io/crates/v/cirious_codex_logger.svg)](https://crates.io/crates/cirious_codex_logger) [![Docs.rs](https://docs.rs/cirious_codex_logger/badge.svg)](https://docs.rs/cirious_codex_logger) [![Language](https://img.shields.io/badge/Language-Rust-black?logo=rust)](https://www.rust-lang.org/) [![License](https://img.shields.io/badge/License-MIT%2FApache-blue.svg)](#-license)
+[![CI](https://github.com/cirious-studio/cirious_codex_logger/actions/workflows/ci.yml/badge.svg)](https://github.com/cirious-studio/cirious_codex_logger/actions/workflows/ci.yml) [![Crates.io](https://img.shields.io/crates/v/cirious_codex_logger.svg)](https://crates.io/crates/cirious_codex_logger) [![Docs.rs](https://docs.rs/cirious_codex_logger/badge.svg)](https://docs.rs/cirious_codex_logger) [![Language](https://img.shields.io/badge/Language-Rust-black?logo=rust)](https://www.rust-lang.org/) [![License](https://img.shields.io/badge/License-MIT%2FApache-blue.svg)](#-license)
 
 </div>
 
