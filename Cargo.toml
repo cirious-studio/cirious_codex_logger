@@ -1,11 +1,19 @@
 [package]
-name = "cirious-codex-logger"
-authors = ["Cirious Studio <cirious.studio@proton.me>"]
+name = "cirious_codex_logger"
 version = "0.1.0"
+authors = ["Cirious Studio <cirious.studio@proton.me>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Structured logging library for the Cirious Codex ecosystem."
 repository = "https://github.com/Cirious-Studio/cirious_codex_logger"
+homepage = "https://github.com/Cirious-Studio/cirious_codex_logger"
+documentation = "https://docs.rs/cirious_codex_logger"
+readme = "README.md"
+categories = ["development-tools::debugging", "command-line-interface"]
+keywords = ["logging", "logger", "terminal", "observability", "tracing"]
+
+[lints.rust]
+missing_docs = "warn"
 
 [dependencies]
-cirious_codex_term = { git = "https://github.com/cirious-studio/cirious_codex_term.git"}
+cirious_codex_term = "0.1"
