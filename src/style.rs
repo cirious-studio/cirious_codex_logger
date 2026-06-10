@@ -106,6 +106,6 @@ mod tests {
     // Validating the presence of the basic strings.
     // For a more exact test, you would assert the exact ANSI string output.
     assert!(result.contains("Styled message"));
-    assert!(result.contains("Warn"));
+    assert!(result.contains("WARN"));
   }
 }
