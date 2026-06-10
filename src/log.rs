@@ -55,7 +55,7 @@ macro_rules! __log_internal {
       if let Some(logger) = $crate::get_logger() {
         let record = $crate::format::Record {
           level: $level,
-          args: format_args!($($arg)+),
+          args: format!($($arg)+),
           file: file!(),
           line: line!(),
           module_path: module_path!(),

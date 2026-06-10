@@ -5,11 +5,12 @@ use crate::Level;
 /// A `Record` contains all the necessary metadata and arguments required to
 /// output a log message. It is passed from the logging macros to the active
 /// dispatchers via a formatter.
-pub struct Record<'a> {
+#[derive(Clone, Debug)]
+pub struct Record {
   /// The verbosity level of this record.
   pub level: Level,
   /// The formatted message arguments provided via the logging macros.
-  pub args: std::fmt::Arguments<'a>,
+  pub args: String,
   /// The file name of the location where the log macro was invoked.
   pub file: &'static str,
   /// The line number of the location where the log macro was invoked.
@@ -68,7 +69,7 @@ mod tests {
     let args = format_args!("System initialized");
     let record = Record {
       level: Level::Debug,
-      args,
+      args: args.to_string(),
       file: "test",
       line: 1,
       module_path: "test",

@@ -93,7 +93,7 @@ mod tests {
     let args = format_args!("Styled message");
     let record = Record {
       level: Level::Warn,
-      args,
+      args: args.to_string(),
       file: "test",
       line: 1,
       module_path: "test",

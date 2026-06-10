@@ -54,7 +54,7 @@ fn main() {
 - [x] Global Logger Registration (`OnceLock` integration for macros).
 - [x] Context & Metadata Enrichment (`timestamp`, `module_path`, `file`, `line`).
 - [x] Log Filtering (Level & Module-based filtering capabilities).
-- [ ] Non-blocking / Async Dispatching (Background thread queueing).
+- [x] Non-blocking / Async Dispatching (Background thread queueing).
 - [ ] Rolling File Dispatcher (Size or Date-based file rotation).
 
 ---

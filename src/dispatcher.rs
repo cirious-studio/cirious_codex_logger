@@ -1,3 +1,6 @@
+use std::sync::mpsc::{sync_channel, SyncSender};
+use std::thread;
+
 use crate::format::{Formatter, Record};
 
 /// A trait representing a destination for log records.
@@ -57,6 +60,61 @@ impl<F: Formatter + Send + Sync + std::fmt::Debug> Dispatcher for StderrDispatch
     eprintln!("{}", output); // Outputs to Standard Error
   }
 }
+
+/// A dispatcher that offloads log record processing to a dedicated background thread.
+///
+/// The `AsyncDispatcher` acts as a wrapper around an underlying `Dispatcher`,
+/// decoupling the log-generating threads from the I/O-intensive task of dispatching
+/// log records.
+///
+/// # Mechanism
+/// It utilizes a bounded channel (`std::sync::mpsc::sync_channel`) to queue
+/// [`Record`] instances. A background thread continuously consumes these records
+/// and forwards them to the wrapped dispatcher. This prevents the main execution
+/// path from blocking during I/O operations (e.g., writing to a slow file system
+/// or a terminal).
+///
+/// # Backpressure
+/// Because the channel is bounded by the `buffer_size`, the `AsyncDispatcher`
+/// inherently provides backpressure. If the logger falls behind the rate of incoming
+/// log events, the main thread will block until space becomes available in the buffer,
+/// preventing unbounded memory growth.
+#[derive(Debug)]
+pub struct AsyncDispatcher {
+  sender: SyncSender<Record>,
+}
+
+impl AsyncDispatcher {
+  /// Creates a new `AsyncDispatcher` that wraps the provided `dispatcher`.
+  ///
+  /// # Arguments
+  /// * `dispatcher` - The destination to which records will eventually be sent.
+  /// * `buffer_size` - The maximum number of log records to queue before the
+  ///   logging threads are blocked (backpressure limit).
+  ///
+  /// # Panics
+  /// This will spawn a new OS thread. If the operating system fails to create
+  /// the thread, this method will panic.
+  pub fn new(dispatcher: Box<dyn Dispatcher + Send + Sync>, buffer_size: usize) -> Self {
+    let (sender, receiver) = sync_channel::<Record>(buffer_size);
+
+    thread::spawn(move || {
+      // The background thread stays alive as long as the sender exists.
+      while let Ok(record) = receiver.recv() {
+        dispatcher.dispatch(&record);
+      }
+    });
+
+    Self { sender }
+  }
+}
+
+impl Dispatcher for AsyncDispatcher {
+  fn dispatch(&self, record: &Record) {
+    self.sender.send(record.clone()).ok();
+  }
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -68,7 +126,7 @@ mod tests {
     let args = format_args!("Testing stdout dispatcher");
     let record = Record {
       level: Level::Info,
-      args,
+      args: args.to_string(),
       file: "test",
       line: 1,
       module_path: "test",
@@ -88,7 +146,7 @@ mod tests {
     let args = format_args!("Testing stderr dispatcher");
     let record = Record {
       level: Level::Error,
-      args,
+      args: args.to_string(),
       file: "test",
       line: 1,
       module_path: "test",

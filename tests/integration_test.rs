@@ -1,4 +1,6 @@
-#![allow(missing_docs)]
+//! # Cirious Codex Logger — Integration Tests
+//!
+//! This module contains integration tests for the logger functionality.
 
 use cirious_codex_logger::{Formatter, JsonFormatter, Level, Record};
 
@@ -7,7 +9,7 @@ fn test_json_formatter() {
   let args = format_args!("Hello World");
   let record = Record {
     level: Level::Info,
-    args,
+    args: args.to_string(),
     file: "test",
     line: 1,
     module_path: "test",
