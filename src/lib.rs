@@ -1,30 +1,14 @@
-//! # Cirious Codex Logger
+//! ## Initialization
 //!
-//! A highly optimized, foundational library for structured logging and event tracing
-//! designed as the ultimate observability bedrock for the Cirious ecosystem.
-//!
-//! This crate provides efficient mechanisms for capturing, formatting, and dispatching
-//! application events with rich metadata, prioritizing performance, structural integrity,
-//! and seamless terminal integration.
-//!
-//! ## Quick Start
-//!
-//! Simply use the provided core macros to easily emit structured logs anywhere in your
-//! application.
+//! To begin logging, initialize the system with your preferred dispatcher:
 //!
 //! ```rust
-//! use cirious_codex_logger::{debug, error, info, trace, warn};
+//! use cirious_codex_logger::{init, StdoutDispatcher, StyledTerminalFormatter};
 //!
-//! // Emit informational events
-//! info!("Application started successfully.");
+//! let formatter = StyledTerminalFormatter;
+//! let dispatcher = Box::new(StdoutDispatcher::new(formatter));
 //!
-//! // Trace execution flow or debug variables
-//! debug!("Debugging an internal variable: {}", 42);
-//! trace!("Tracing execution flow.");
-//!
-//! // Log warnings and critical errors
-//! warn!("Memory usage is high.");
-//! error!("Failed to connect to the database.");
+//! init(dispatcher).expect("Logger already initialized");
 //! ```
 
 #![warn(missing_docs)]
@@ -54,7 +38,7 @@ pub mod log;
 /// Integrates with the Cirious ecosystem to provide visually distinct and rich terminal outputs.
 pub mod style;
 
-pub use dispatcher::{Dispatcher, StderrDispatcher, StdoutDispatcher};
+pub use dispatcher::{AsyncDispatcher, Dispatcher, RollingFileDispatcher, StderrDispatcher, StdoutDispatcher};
 pub use format::{Formatter, HumanReadableFormatter, JsonFormatter, Record};
 pub use level::Level;
 pub use log::*;

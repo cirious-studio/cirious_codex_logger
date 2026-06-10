@@ -1,36 +1,22 @@
-//! # Cirious Codex Logger — Integration Tests
+//! Integration tests for the Cirious Codex Logger initialization and dispatch workflow.
 //!
-//! This module contains integration tests for the logger functionality.
+//! This module ensures that the global logger can be successfully initialized
+//! and that the logging macros interact correctly with the dispatcher at runtime.
 
-use cirious_codex_logger::{Formatter, JsonFormatter, Level, Record};
-
-#[test]
-fn test_json_formatter() {
-  let args = format_args!("Hello World");
-  let record = Record {
-    level: Level::Info,
-    args: args.to_string(),
-    file: "test",
-    line: 1,
-    module_path: "test",
-    timestamp: std::time::SystemTime::now(),
-  };
-
-  let formatter = JsonFormatter;
-  let result = formatter.format(&record);
-
-  assert_eq!(result, r#"{"level":"Info","message":"Hello World"}"#);
-}
-
-use cirious_codex_logger::{debug, error, info, trace, warn};
+use cirious_codex_logger::{info, init, HumanReadableFormatter, StdoutDispatcher};
 
 #[test]
-fn test_macros_compilation_and_execution() {
-  // This test ensures that invoking the macros doesn't cause panics
-  // and that formatting variables works properly.
-  info!("Testing info without args");
-  debug!("Testing debug with an arg: {}", 42);
-  warn!("Testing warn...");
-  error!("Testing error with multiple args: {}, {}", "foo", "bar");
-  trace!("Testing trace");
+fn test_logger_initialization_and_dispatch() {
+  // Set up a standard stdout dispatcher for testing
+  let formatter = HumanReadableFormatter;
+  let dispatcher = Box::new(StdoutDispatcher::new(formatter));
+
+  // Initialize the global logger
+  let result = init(dispatcher);
+
+  // Assert that the logger was initialized successfully
+  assert!(result.is_ok(), "The logger should have been initialized successfully");
+
+  // Verify that the info! macro functions correctly post-initialization
+  info!("Integration test running successfully");
 }

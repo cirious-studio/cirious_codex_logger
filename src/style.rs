@@ -1,20 +1,19 @@
-// Adjust the import path according to your actual `cirious_codex_term` crate structure
 use crate::{
   format::{Formatter, Record},
   Level,
 };
-use cirious_codex_term::Color;
+use cirious_codex_term::{Color, StyleExt};
 
 /// Maps a `Level` to its corresponding terminal `Color`.
 ///
-/// This helper ensures a consistent and recognizable color scheme across
-/// the Cirious ecosystem:
+/// This provides the visual hierarchy for the terminal output:
 /// - Error: Red
 /// - Warn: Yellow
 /// - Info: Blue
 /// - Debug: Magenta
 /// - Trace: Bright Black (Gray)
-pub fn level_color(level: Level) -> Color {
+#[must_use]
+pub const fn level_color(level: Level) -> Color {
   match level {
     Level::Error => Color::Red,
     Level::Warn => Color::Yellow,
@@ -25,87 +24,105 @@ pub fn level_color(level: Level) -> Color {
 }
 
 /// A formatter that leverages `cirious_codex_term` for rich terminal styling.
-///
-/// This formatter wraps the log level in brackets, colors it according to the
-/// severity, and applies bold text to make tags pop in standard terminal
-/// environments.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct StyledTerminalFormatter;
 
-/// Formats a `std::time::SystemTime` into a human-readable string.
-fn format_timestamp(time: std::time::SystemTime) -> String {
-  use std::time::UNIX_EPOCH;
-
-  let duration = time.duration_since(UNIX_EPOCH).unwrap_or_default();
-  let secs = duration.as_secs();
-
-  let h = (secs / 3600) % 24;
-  let m = (secs / 60) % 60;
-  let s = secs % 60;
-
-  format!("{:02}:{:02}:{:02}", h, m, s)
-}
-
 impl Formatter for StyledTerminalFormatter {
+  /// Formats the record into an ANSI-styled string.
+  ///
+  /// The output includes a timestamp, a bold/colorized log level,
+  /// and the message. For `Trace` logs, it includes additional
+  /// source metadata (file, module, and line).
   fn format(&self, record: &Record) -> String {
-    use cirious_codex_term::StyleExt;
-
-    // 1. Prepare styling
-    let color = level_color(record.level);
+    // 1. Level Styling
     let level_tag = format!("{:?}", record.level).to_uppercase();
-    let styled_level = format!("[{}]", level_tag).bold().color(color);
+    let styled_level = format!("[{level_tag}]").bold().color(level_color(record.level));
 
-    // 2. Prepare Timestamp (Simple format using system time)
-    let now = std::time::SystemTime::now();
+    // 2. Timestamp Styling
+    let timestamp = format!("[{}]", format_timestamp(record.timestamp))
+      .rgb(68, 68, 68)
+      .bold();
 
-    let timestamp = format!("[{}]", format_timestamp(now).rgb(68, 68, 68).bold());
+    // 3. Layout Composition
+    let base = format!("{timestamp} {styled_level}");
 
-    // 3. Conditional Layout based on Level
-    let base = format!("{} {}", timestamp, styled_level);
-
-    if record.level == crate::Level::Trace {
-      // Verbose layout: [Time] [Level] [File:Module:Line] Message
-      let trace_location = format!("[{}:{}:{}]", record.file, record.module_path, record.line)
+    if record.level == Level::Trace {
+      let trace_loc = format!("[{}:{}:{}]", record.file, record.module_path, record.line)
         .bold()
         .bright_black();
-
-      format!("{} {} {}", base, trace_location, record.args)
+      format!("{} {} {}", base, trace_loc, record.args)
     } else {
-      // Standard layout: [Time] [Level] Message
       format!("{} {}", base, record.args)
     }
   }
 }
 
+/// Formats `SystemTime` into a human-readable HH:MM:SS string.
+fn format_timestamp(time: std::time::SystemTime) -> String {
+  use std::time::UNIX_EPOCH;
+  let duration = time.duration_since(UNIX_EPOCH).unwrap_or_default();
+  let secs = duration.as_secs();
+  format!("{:02}:{:02}:{:02}", (secs / 3600) % 24, (secs / 60) % 60, secs % 60)
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
-  use cirious_codex_term::Color;
+  use crate::Level;
+  use std::time::SystemTime;
 
   #[test]
   fn test_level_color_mapping() {
     assert_eq!(level_color(Level::Error), Color::Red);
+    assert_eq!(level_color(Level::Warn), Color::Yellow);
     assert_eq!(level_color(Level::Info), Color::Blue);
+    assert_eq!(level_color(Level::Debug), Color::Magenta);
+    assert_eq!(level_color(Level::Trace), Color::BrightBlack);
   }
 
   #[test]
-  fn test_styled_terminal_formatter() {
-    let args = format_args!("Styled message");
+  fn test_format_timestamp() {
+    // Testa um timestamp fixo (UNIX_EPOCH é 00:00:00)
+    let time = SystemTime::UNIX_EPOCH;
+    assert_eq!(format_timestamp(time), "00:00:00");
+  }
+
+  #[test]
+  fn test_styled_terminal_formatter_output() {
+    let formatter = StyledTerminalFormatter;
     let record = Record {
-      level: Level::Warn,
-      args: args.to_string(),
-      file: "test",
-      line: 1,
-      module_path: "test",
-      timestamp: std::time::SystemTime::now(),
+      level: Level::Info,
+      args: "Operação iniciada".to_string(),
+      file: "main.rs",
+      line: 10,
+      module_path: "app::core",
+      timestamp: SystemTime::UNIX_EPOCH,
     };
 
-    let formatter = StyledTerminalFormatter;
     let result = formatter.format(&record);
 
-    // Validating the presence of the basic strings.
-    // For a more exact test, you would assert the exact ANSI string output.
-    assert!(result.contains("Styled message"));
-    assert!(result.contains("WARN"));
+    // Verifica os elementos essenciais da formatação padrão
+    assert!(result.contains("INFO")); // Nível
+    assert!(result.contains("Operação iniciada")); // Mensagem
+    assert!(result.contains("00:00:00")); // Timestamp
+  }
+
+  #[test]
+  fn test_styled_terminal_formatter_trace_layout() {
+    let formatter = StyledTerminalFormatter;
+    let record = Record {
+      level: Level::Trace,
+      args: "Loop executando".to_string(),
+      file: "loop.rs",
+      line: 55,
+      module_path: "app::util",
+      timestamp: SystemTime::UNIX_EPOCH,
+    };
+
+    let result = formatter.format(&record);
+
+    // Verifica se a formatação verbose (detalhes extras) está presente no TRACE
+    assert!(result.contains("TRACE"));
+    assert!(result.contains("loop.rs:app::util:55"));
   }
 }
