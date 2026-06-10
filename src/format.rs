@@ -10,7 +10,14 @@ pub struct Record<'a> {
   pub level: Level,
   /// The formatted message arguments provided via the logging macros.
   pub args: std::fmt::Arguments<'a>,
-  // Future: pub target: &'a str, pub timestamp: SystemTime
+  /// The file name of the location where the log macro was invoked.
+  pub file: &'static str,
+  /// The line number of the location where the log macro was invoked.
+  pub line: u32,
+  /// The module path of the location where the log macro was invoked.
+  pub module_path: &'static str,
+  /// The timestamp of the log record.
+  pub timestamp: std::time::SystemTime,
 }
 
 /// A trait for structuring and serializing log records.
@@ -62,6 +69,10 @@ mod tests {
     let record = Record {
       level: Level::Debug,
       args,
+      file: "test",
+      line: 1,
+      module_path: "test",
+      timestamp: std::time::SystemTime::now(),
     };
 
     let formatter = HumanReadableFormatter;

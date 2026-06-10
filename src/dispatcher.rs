@@ -69,6 +69,10 @@ mod tests {
     let record = Record {
       level: Level::Info,
       args,
+      file: "test",
+      line: 1,
+      module_path: "test",
+      timestamp: std::time::SystemTime::now(),
     };
 
     // Constructing the dispatcher with a specific formatter
@@ -85,6 +89,10 @@ mod tests {
     let record = Record {
       level: Level::Error,
       args,
+      file: "test",
+      line: 1,
+      module_path: "test",
+      timestamp: std::time::SystemTime::now(),
     };
 
     let dispatcher = StderrDispatcher::new(JsonFormatter);

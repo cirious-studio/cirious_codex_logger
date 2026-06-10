@@ -22,20 +22,20 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-cirious_codex_logger = "0.1"
+cirious_codex_logger = "0.2"
 ```
 
 And then in your code:
 
 ```rust
-use cirious_codex_logger::{debug, error, info, trace, warn};
- 
+use cirious_codex_logger::{info, init, StdoutDispatcher, StyledTerminalFormatter};
+
 fn main() {
-  info!("Application started successfully.");
-  debug!("Debugging an internal variable: {}", 42);
-  warn!("Memory usage is high.");
-  error!("Failed to connect to the database.");
-  trace!("Tracing execution flow.");
+  let formatter = StyledTerminalFormatter;
+  let dispatcher = Box::new(StdoutDispatcher::new(formatter));
+  init(dispatcher).unwrap();
+  info!("The logger is officially powered by Cirious Codex Term!");
+  info!("Data: {}, Status: {}", 123, "Active");
 }
 ```
 ---
@@ -52,7 +52,7 @@ fn main() {
 ### 🔭 v0.2.0 — Planned
 
 - [x] Global Logger Registration (`OnceLock` integration for macros).
-- [ ] Context & Metadata Enrichment (`timestamp`, `module_path`, `file`, `line`).
+- [x] Context & Metadata Enrichment (`timestamp`, `module_path`, `file`, `line`).
 - [ ] Log Filtering (Level & Module-based filtering capabilities).
 - [ ] Non-blocking / Async Dispatching (Background thread queueing).
 - [ ] Rolling File Dispatcher (Size or Date-based file rotation).

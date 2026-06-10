@@ -8,6 +8,10 @@ fn test_json_formatter() {
   let record = Record {
     level: Level::Info,
     args,
+    file: "test",
+    line: 1,
+    module_path: "test",
+    timestamp: std::time::SystemTime::now(),
   };
 
   let formatter = JsonFormatter;

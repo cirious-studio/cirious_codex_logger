@@ -31,6 +31,10 @@ macro_rules! __log_internal {
                 let record = $crate::format::Record {
                     level: $level,
                     args: format_args!($($arg)+),
+                    file: file!(),
+                    line: line!(),
+                    module_path: module_path!(),
+                    timestamp: std::time::SystemTime::now(),
                 };
                 logger.dispatch(&record);
             }

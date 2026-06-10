@@ -1,6 +1,6 @@
-#![allow(missing_docs)]
+//! # Cirious Codex Logger — Basic Usage Example
 
-use cirious_codex_logger::{info, init, StdoutDispatcher, StyledTerminalFormatter};
+use cirious_codex_logger::{info, init, trace, StdoutDispatcher, StyledTerminalFormatter};
 
 fn main() {
   let formatter = StyledTerminalFormatter;
@@ -8,4 +8,6 @@ fn main() {
   init(dispatcher).unwrap();
   info!("The logger is officially powered by Cirious Codex Term!");
   info!("Data: {}, Status: {}", 123, "Active");
+
+  trace!("test trace");
 }
