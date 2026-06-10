@@ -1,6 +1,6 @@
 [package]
 name = "cirious_codex_logger"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Cirious Studio <cirious.studio@proton.me>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -16,4 +16,4 @@ keywords = ["logging", "logger", "terminal", "observability", "tracing"]
 missing_docs = "warn"
 
 [dependencies]
-cirious_codex_term = "0.1"
+cirious_codex_term = "0.2"

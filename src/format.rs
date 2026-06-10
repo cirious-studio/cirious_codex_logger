@@ -40,6 +40,7 @@ impl Formatter for HumanReadableFormatter {
 ///
 /// This formatter outputs log records as single-line JSON objects, which is
 /// highly recommended for machine ingestion (e.g., Elasticsearch, Datadog).
+#[derive(Debug)]
 pub struct JsonFormatter;
 
 impl Formatter for JsonFormatter {

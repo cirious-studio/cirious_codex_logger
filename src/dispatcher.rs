@@ -5,7 +5,7 @@ use crate::format::{Formatter, Record};
 /// Dispatchers are responsible for taking a formatted log record and outputting
 /// it to a specific target (e.g., standard output, standard error, a file, etc.).
 /// All dispatchers must be thread-safe (`Send + Sync`) to allow global logging.
-pub trait Dispatcher: Send + Sync {
+pub trait Dispatcher: Send + Sync + std::fmt::Debug {
   /// Dispatches a log record to the underlying destination.
   ///
   /// This method is called by the logging macros whenever a new event is emitted.
@@ -16,6 +16,7 @@ pub trait Dispatcher: Send + Sync {
 ///
 /// This dispatcher uses the provided `Formatter` to convert the `Record` into
 /// a string before printing it via `println!`.
+#[derive(Debug)]
 pub struct StdoutDispatcher<F: Formatter> {
   formatter: F,
 }
@@ -27,7 +28,7 @@ impl<F: Formatter> StdoutDispatcher<F> {
   }
 }
 
-impl<F: Formatter + Send + Sync> Dispatcher for StdoutDispatcher<F> {
+impl<F: Formatter + Send + Sync + std::fmt::Debug> Dispatcher for StdoutDispatcher<F> {
   fn dispatch(&self, record: &Record) {
     let output = self.formatter.format(record);
     println!("{}", output);
@@ -38,18 +39,19 @@ impl<F: Formatter + Send + Sync> Dispatcher for StdoutDispatcher<F> {
 ///
 /// This dispatcher uses the provided `Formatter` to convert the `Record` into
 /// a string before printing it via `eprintln!`.
+#[derive(Debug)]
 pub struct StderrDispatcher<F: Formatter> {
   formatter: F,
 }
 
-impl<F: Formatter> StderrDispatcher<F> {
+impl<F: Formatter + std::fmt::Debug> StderrDispatcher<F> {
   /// Creates a new `StderrDispatcher` with the given formatter.
   pub fn new(formatter: F) -> Self {
     Self { formatter }
   }
 }
 
-impl<F: Formatter + Send + Sync> Dispatcher for StderrDispatcher<F> {
+impl<F: Formatter + Send + Sync + std::fmt::Debug> Dispatcher for StderrDispatcher<F> {
   fn dispatch(&self, record: &Record) {
     let output = self.formatter.format(record);
     eprintln!("{}", output); // Outputs to Standard Error

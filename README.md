@@ -16,17 +16,6 @@
 
 Designed to be the ultimate observability bedrock for tools and applications within the Cirious ecosystem, prioritizing performance, structural integrity, and seamless terminal integration.
 
----
-
-## ✨ Features
-
-- Core logging macros (`trace`, `debug`, `info`, `warn`, `error`).
-- Extensible output formatters (JSON, human-readable terminal).
-- Pluggable dispatchers (stdout, stderr, rolling files).
-- Integration with `cirious_codex_term` for rich, native terminal styling.
-
----
-
 ## 🚀 Quick Start
  
 Add the following to your `Cargo.toml`:
@@ -53,9 +42,16 @@ fn main() {
 
 ## 🚧 Current Status & Roadmap
 
-The architecture is currently being mapped out for the initial `v0.2` release:
+### ✅ v0.1.0 — Completed
 
-- [ ] Global Logger Registration (`OnceLock` integration for macros).
+- [x] **Core logging macros:** (`trace`, `debug`, `info`, `warn`, `error`).
+- [x] **Extensible output formatters:** (JSON, human-readable terminal).
+- [x] **Pluggable dispatchers:** (stdout, stderr, rolling files).
+- [x] **Integration:** with `cirious_codex_term` for rich, native terminal styling.
+
+### 🔭 v0.2.0 — Planned
+
+- [x] Global Logger Registration (`OnceLock` integration for macros).
 - [ ] Context & Metadata Enrichment (`timestamp`, `module_path`, `file`, `line`).
 - [ ] Log Filtering (Level & Module-based filtering capabilities).
 - [ ] Non-blocking / Async Dispatching (Background thread queueing).

@@ -29,12 +29,12 @@ pub fn level_color(level: Level) -> Color {
 /// This formatter wraps the log level in brackets, colors it according to the
 /// severity, and applies bold text to make tags pop in standard terminal
 /// environments.
+#[derive(Debug)]
 pub struct StyledTerminalFormatter;
 
 impl Formatter for StyledTerminalFormatter {
   fn format(&self, record: &Record) -> String {
     let color = level_color(record.level);
-
     let bold_code = Style::Bold.to_str();
     let reset_code = Style::Reset.to_str();
 

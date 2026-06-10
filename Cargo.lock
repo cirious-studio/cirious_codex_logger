@@ -4,13 +4,38 @@ version = 4
 
 [[package]]
 name = "cirious_codex_logger"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "cirious_codex_term",
 ]
 
 [[package]]
 name = "cirious_codex_term"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af9ac8b4c918590f8e1b6bc42f23e628b7d6bccd50ed4a87da184d92e4b13e56"
+checksum = "926d6b95970f29f833b22e34f00e895c948a9ac25acf07820611647893417508"
+dependencies = [
+ "libc",
+ "windows-sys",
+]
+
+[[package]]
+name = "libc"
+version = "0.2.186"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
+
+[[package]]
+name = "windows-link"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+
+[[package]]
+name = "windows-sys"
+version = "0.61.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc"
+dependencies = [
+ "windows-link",
+]
