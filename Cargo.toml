@@ -1,6 +1,6 @@
 [package]
 name = "cirious_codex_logger"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Cirious Studio <cirious.studio@proton.me>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -13,7 +13,7 @@ categories = ["development-tools::debugging", "command-line-interface"]
 keywords = ["logging", "logger", "terminal", "observability", "tracing"]
 
 [dependencies]
-cirious_codex_term = "0.2"
+cirious_codex_term = "0.2.1"
 
 [lints.rust]
 unsafe_code = "warn"

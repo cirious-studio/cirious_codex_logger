@@ -11,7 +11,12 @@
 //! init(dispatcher).expect("Logger already initialized");
 //! ```
 
+// Enables docs.rs features to show tags like "Only on Windows"
+#![cfg_attr(docsrs, feature(doc_cfg))]
+// Ensures all public items are documented (Essential for crates.io)
 #![warn(missing_docs)]
+// Prevents accidental unsafe code in the entire crate
+#![deny(unsafe_code)]
 
 /// Routing and dispatching mechanisms for log records.
 ///

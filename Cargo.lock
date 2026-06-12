@@ -4,16 +4,16 @@ version = 4
 
 [[package]]
 name = "cirious_codex_logger"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "cirious_codex_term",
 ]
 
 [[package]]
 name = "cirious_codex_term"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "926d6b95970f29f833b22e34f00e895c948a9ac25acf07820611647893417508"
+checksum = "9fcfe771c570a53848d4711fffa52143a6929ce23f5564672f0761139a78c514"
 dependencies = [
  "libc",
  "windows-sys",

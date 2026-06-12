@@ -187,11 +187,11 @@ fn main() {
 
 ### 🔭 v0.3.0 — Observability & Diagnostics
 
-- [ ] Structured Fields (estilo tracing) → enorme ganho de valor.
-- [ ] MultiDispatcher → muito solicitado em produção.
-- [ ] Runtime Filter Reloading → excelente para debug.
-- [ ] Scoped Context → diferencial profissional.
-- [ ] Panic Capture → praticamente obrigatório para observabilidade.
+- [ ] Structured Fields (tracing style)
+- [ ] MultiDispatcher 
+- [ ] Runtime Filter Reloading 
+- [ ] Scoped Context 
+- [ ] Panic Capture
 
 ## 📜 License
 
